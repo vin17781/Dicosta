@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MQTT WebSocket</title>
+    <script>
+        var socket = new WebSocket("wss://broker.emqx.io:8084/mqtt");
+
+        socket.onopen = function () {
+            console.log("✅ WebSocket connesso!");
+            socket.send(JSON.stringify({
+                "action": "subscribe",
+                "topic": "thunkable/test"
+            }));
+        };
+
+        socket.onmessage = function (event) {
+            var message = "📩 Messaggio ricevuto: " + event.data;
+            console.log(message);
+            window.ReactNativeWebView.postMessage(message);
+        };
+
+        function sendMessage(message) {
+            console.log("📤 Invio messaggio: " + message);
+            socket.send(JSON.stringify({
+                "action": "publish",
+                "topic": "thunkable/test",
+                "message": message
+            }));
+        }
+
+        // Riceve messaggi da Thunkable WebView
+        document.addEventListener("message", function(event) {
+            var receivedMessage = event.data;
+            sendMessage(receivedMessage); // Invia a MQTT
+        });
+    </script>
+</head>
+<body>
+    <h1>MQTT WebSocket</h1>
+</body>
+</html>
