@@ -9,7 +9,7 @@
             console.log("✅ WebSocket connesso!");
             socket.send(JSON.stringify({
                 "action": "subscribe",
-                "topic": "thunkable/test"
+                "topic": "giufanuni"
             }));
         };
 
@@ -23,7 +23,7 @@
             console.log("📤 Invio messaggio: " + message);
             socket.send(JSON.stringify({
                 "action": "publish",
-                "topic": "thunkable/test",
+                "topic": "giufanuni",
                 "message": message
             }));
         }
